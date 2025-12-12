@@ -1,0 +1,7 @@
+{
+  "name": "Meridian",
+  "description": "Meridian is a beautiful global time zone converter and meeting scheduler built by DesignByte Studio.",
+  "requestFramePermissions": [
+    "screen-wake-lock"
+  ]
+}
