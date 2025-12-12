@@ -16,8 +16,8 @@ const Header: React.FC<HeaderProps> = ({ onShare, onReset, onTimer, isLive, isDa
       <div className="flex items-center justify-between gap-3">
         {/* Brand Section */}
         <div className="flex items-center gap-3">
-           <div className="text-brand-600 dark:text-brand-500 shrink-0 transition-transform active:scale-95">
-             <Logo className="w-9 h-9 md:w-12 md:h-12 drop-shadow-sm" />
+           <div className="shrink-0 transition-transform active:scale-95">
+             <Logo size="md" className="drop-shadow-sm" />
            </div>
            
            <div className="flex flex-col justify-center">
