@@ -1,12 +1,31 @@
 {
   "name": "meridian",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Beautiful global time zone converter and meeting planner for global teams",
   "type": "module",
+  "author": "Designbyte Studio",
+  "license": "MIT",
+  "homepage": "https://meridian.designbyte.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designbyte/meridian.git"
+  },
+  "keywords": [
+    "timezone",
+    "time-zone-converter",
+    "world-clock",
+    "meeting-planner",
+    "global-time",
+    "react",
+    "typescript",
+    "vite",
+    "tailwindcss"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "react": "^19.2.1",
