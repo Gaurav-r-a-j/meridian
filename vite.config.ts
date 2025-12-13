@@ -18,6 +18,33 @@ export default defineConfig(({ mode }) => {
         alias: {
           '@': path.resolve(__dirname, './src'),
         }
-      }
+      },
+      build: {
+        // Code splitting for better performance
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'react-vendor': ['react', 'react-dom'],
+              'utils': ['./src/utils/formatters', './src/utils/holidays'],
+            }
+          }
+        },
+        // Optimize chunk size
+        chunkSizeWarningLimit: 1000,
+        // Minify and optimize
+        minify: 'terser',
+        terserOptions: {
+          compress: {
+            drop_console: mode === 'production',
+            drop_debugger: true,
+          },
+        },
+        // Source maps for production debugging (optional)
+        sourcemap: false,
+      },
+      // Optimize dependencies
+      optimizeDeps: {
+        include: ['react', 'react-dom'],
+      },
     };
 });

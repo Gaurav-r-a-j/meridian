@@ -1,6 +1,36 @@
+# robots.txt for Meridian - Global Time Zone Converter
+# https://meridian.designbyte.dev
+
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /dist/
 
+# Allow important files
+Allow: /favicon.ico
+Allow: /favicon/
+Allow: /logo.webp
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemap location
 Sitemap: https://meridian.designbyte.dev/sitemap.xml
 
+# Specific bot rules
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
 

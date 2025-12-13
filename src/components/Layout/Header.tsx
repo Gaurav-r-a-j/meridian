@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
 
 interface HeaderProps {
@@ -15,9 +16,9 @@ const Header: React.FC<HeaderProps> = ({ onShare, onReset, onTimer, isLive, isDa
     <header className="mb-6 md:mb-10 pt-2">
       <div className="flex items-center justify-between gap-3">
         {/* Brand Section */}
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
            <div className="shrink-0 transition-transform active:scale-95">
-             <Logo size="md" className="drop-shadow-sm" />
+             <Logo size="md" className="drop-shadow-sm" alt="Meridian Logo - Global Time Zone Converter" />
            </div>
            
            <div className="flex flex-col justify-center">
@@ -28,7 +29,29 @@ const Header: React.FC<HeaderProps> = ({ onShare, onReset, onTimer, isLive, isDa
               Global Time & Meeting Planner
             </p>
            </div>
-        </div>
+        </Link>
+        
+        {/* Navigation Links */}
+        <nav className="hidden md:flex items-center gap-4 mr-auto ml-8">
+          <Link 
+            to="/" 
+            className="text-sm font-medium text-text-secondary hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+          >
+            Home
+          </Link>
+          <Link 
+            to="/about" 
+            className="text-sm font-medium text-text-secondary hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+          >
+            About
+          </Link>
+          <Link 
+            to="/faq" 
+            className="text-sm font-medium text-text-secondary hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+          >
+            FAQ
+          </Link>
+        </nav>
         
         {/* Actions Section */}
         <div className="flex items-center gap-1.5 md:gap-3">

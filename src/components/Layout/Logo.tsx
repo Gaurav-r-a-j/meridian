@@ -24,9 +24,11 @@ const Logo: React.FC<LogoProps> = ({
   return (
     <img 
       src="/logo.webp" 
-      alt="Meridian Logo" 
+      alt="Meridian Logo - Global Time Zone Converter and Meeting Planner" 
       className={baseClasses}
       loading="eager"
+      width={size === 'sm' ? 32 : size === 'md' ? 48 : size === 'lg' ? 64 : 96}
+      height={size === 'sm' ? 32 : size === 'md' ? 48 : size === 'lg' ? 64 : 96}
       aria-label="Meridian - Global Time Zone Converter"
     />
   );

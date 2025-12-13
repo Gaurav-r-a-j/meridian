@@ -52,37 +52,92 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Structured Data (JSON-LD) - Enhanced -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Meridian",
-      "description": "Beautiful, modern time zone converter for global teams. Compare times across 200+ cities, plan meetings, and never miss a call.",
-      "url": "https://meridian.designbyte.dev/",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Web Browser",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "creator": {
-        "@type": "Organization",
-        "name": "Designbyte Studio",
-        "url": "https://studio.designbyte.dev"
-      },
-      "featureList": [
-        "Global time zone converter",
-        "200+ cities worldwide",
-        "Meeting planner",
-        "Time travel mode",
-        "Dark mode support",
-        "Focus timer",
-        "Time zone comparison"
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://meridian.designbyte.dev/#webapp",
+          "name": "Meridian",
+          "description": "Beautiful, modern time zone converter for global teams. Compare times across 200+ cities, plan meetings, and never miss a call.",
+          "url": "https://meridian.designbyte.dev/",
+          "applicationCategory": "UtilityApplication",
+          "operatingSystem": "Web Browser",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "softwareVersion": "1.0.0",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "creator": {
+            "@type": "Organization",
+            "name": "Designbyte Studio",
+            "url": "https://studio.designbyte.dev",
+            "logo": "https://meridian.designbyte.dev/logo.webp"
+          },
+          "featureList": [
+            "Global time zone converter",
+            "200+ cities worldwide",
+            "Meeting planner",
+            "Time travel mode",
+            "Dark mode support",
+            "Focus timer",
+            "Time zone comparison"
+          ],
+          "screenshot": "https://meridian.designbyte.dev/og-image.png"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://meridian.designbyte.dev/#organization",
+          "name": "Designbyte Studio",
+          "url": "https://studio.designbyte.dev",
+          "logo": "https://meridian.designbyte.dev/logo.webp",
+          "sameAs": [
+            "https://studio.designbyte.dev"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://meridian.designbyte.dev/#website",
+          "url": "https://meridian.designbyte.dev/",
+          "name": "Meridian",
+          "description": "Global Time Zone Converter & Meeting Planner",
+          "publisher": {
+            "@id": "https://meridian.designbyte.dev/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://meridian.designbyte.dev/?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://meridian.designbyte.dev/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://meridian.designbyte.dev/"
+            }
+          ]
+        }
       ]
     }
     </script>
+    
+    <!-- Additional Performance Optimizations -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Security Headers (should be added in server config, but documenting here) -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
   </head>
   <body>
     <div id="root"></div>
