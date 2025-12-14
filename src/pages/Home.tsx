@@ -11,6 +11,7 @@ import TimeGrid from '../components/TimeGrid/TimeGrid';
 import MeetingLinkModal from '../components/Modals/MeetingLinkModal';
 import TimerModal from '../components/Modals/TimerModal';
 import TimeZoneComparator from '../components/Tools/TimeZoneComparator';
+import FAQSection from '../components/Pages/FAQSection';
 
 const Home: React.FC = () => {
   // State
@@ -173,6 +174,7 @@ const Home: React.FC = () => {
           onToggleFavorite={toggleFavorite}
         />
         
+        <FAQSection />
       </div>
       
       <Footer />

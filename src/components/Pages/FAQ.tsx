@@ -1,121 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Logo from '../Layout/Logo';
+import Footer from '../Layout/Footer';
+import FAQSection from './FAQSection';
 
 const FAQ: React.FC = () => {
-  const faqs = [
-    {
-      question: "What is Meridian?",
-      answer: "Meridian is a beautiful, modern time zone converter and meeting planner designed for global teams. It helps you compare times across 200+ cities worldwide, plan meetings, and never miss a call."
-    },
-    {
-      question: "How many cities are supported?",
-      answer: "Meridian supports over 200 cities across all major time zones worldwide, including major business centers, capitals, and popular destinations."
-    },
-    {
-      question: "Can I pin my favorite cities?",
-      answer: "Yes! You can pin your frequently used cities to the top of the list for quick access. Just click the pin icon on any time zone card."
-    },
-    {
-      question: "What is Time Travel Mode?",
-      answer: "Time Travel Mode allows you to adjust the displayed time for all cities simultaneously. This is perfect for planning meetings at specific times in the future or past."
-    },
-    {
-      question: "Does Meridian work offline?",
-      answer: "Meridian is a web application that requires an internet connection to load initially. However, once loaded, basic time calculations work offline."
-    },
-    {
-      question: "Is Meridian free to use?",
-      answer: "Yes, Meridian is completely free to use. There are no subscriptions, hidden fees, or premium features."
-    },
-    {
-      question: "Can I share meeting times with my team?",
-      answer: "Absolutely! Use the Share button to generate a formatted schedule that you can copy or add directly to Google Calendar."
-    },
-    {
-      question: "Does Meridian support dark mode?",
-      answer: "Yes! Meridian has a beautiful dark mode that you can toggle using the theme button in the header."
-    },
-    {
-      question: "What is the Focus Timer?",
-      answer: "The Focus Timer is a built-in Pomodoro-style timer that helps you stay focused during work sessions. It includes multiple alarm sounds and wake lock support."
-    },
-    {
-      question: "How accurate are the time zone conversions?",
-      answer: "Meridian uses the IANA Time Zone Database, which is the most accurate and up-to-date source for time zone information, including daylight saving time changes."
-    },
-    {
-      question: "Can I compare two time zones side by side?",
-      answer: "Yes! The Time Zone Comparator feature allows you to compare two cities and see a visual timeline of their business hours overlap."
-    },
-    {
-      question: "Is my data stored?",
-      answer: "Meridian stores your pinned cities and theme preference locally in your browser. No personal data is sent to any server."
-    }
-  ];
+    // Theme State (Duplicated from Home for standalone page consistency)
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem('meridian-theme');
+            if (saved) return saved === 'dark';
+            return document.documentElement.classList.contains('dark');
+        }
+        return false;
+    });
 
-  return (
-    <div className="min-h-screen bg-surface-50 text-text-primary">
-      <div className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <header className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-text-primary mb-4">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-lg text-text-secondary">
-            Everything you need to know about Meridian
-          </p>
-        </header>
+    useEffect(() => {
+        if (isDarkMode) {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('meridian-theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('meridian-theme', 'light');
+        }
+    }, [isDarkMode]);
 
-        <div className="space-y-6">
-          {faqs.map((faq, index) => (
-            <details
-              key={index}
-              className="bg-surface-card rounded-2xl border border-surface-200 p-6 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <summary className="font-bold text-lg text-text-primary cursor-pointer list-none flex items-center justify-between">
-                <span>{faq.question}</span>
-                <svg
-                  className="w-5 h-5 text-brand-500 transition-transform"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </summary>
-              <p className="mt-4 text-text-secondary leading-relaxed">
-                {faq.answer}
-              </p>
-            </details>
-          ))}
+    const toggleTheme = () => setIsDarkMode(prev => !prev);
+
+    return (
+        <div className="min-h-screen bg-surface-50 text-text-primary font-sans flex flex-col transition-colors duration-300">
+             {/* Simple Header for FAQ Page */}
+             <header className="w-full px-4 py-6 sm:px-6 lg:px-8 border-b border-surface-200 dark:border-surface-800 bg-surface-50/80 backdrop-blur-md sticky top-0 z-10">
+                <div className="max-w-7xl mx-auto flex items-center justify-between">
+                   <Link to="/" className="flex items-center gap-3 group">
+                      <div className="shrink-0 transition-transform group-hover:scale-95">
+                        <Logo size="sm" />
+                      </div>
+                      <span className="text-xl font-extrabold text-text-primary tracking-tight">Meridian</span>
+                   </Link>
+        
+                   <button
+                      onClick={toggleTheme}
+                      className="p-2 rounded-full text-text-secondary hover:bg-surface-200 transition-colors"
+                      title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                   >
+                     {isDarkMode ? (
+                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                       </svg>
+                     ) : (
+                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                       </svg>
+                     )}
+                   </button>
+                </div>
+              </header>
+
+            <main className="flex-grow pt-12">
+               <FAQSection />
+
+               <div className="max-w-4xl mx-auto px-4 pb-20 sm:px-6 lg:px-8">
+                    <div className="bg-brand-50 dark:bg-brand-900/20 rounded-3xl p-8 md:p-12 border border-brand-200 dark:border-brand-800 text-center">
+                    <h2 className="text-2xl md:text-3xl font-bold text-text-primary mb-4">
+                        Still have questions?
+                    </h2>
+                    <p className="text-text-secondary mb-8 max-w-lg mx-auto">
+                        Can't find the answer you're looking for? Reach out to our support team and we'll get back to you as soon as possible.
+                    </p>
+                    <a
+                        href="https://studio.designbyte.dev"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-full font-semibold transition-colors shadow-lg shadow-brand-500/20"
+                    >
+                        Contact Designbyte Studio
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a>
+                    </div>
+               </div>
+            </main>
+
+            <Footer />
         </div>
-
-        <div className="mt-12 bg-brand-50 dark:bg-brand-900/20 rounded-2xl p-8 border border-brand-200 dark:border-brand-800">
-          <h2 className="text-2xl font-bold text-text-primary mb-4">
-            Still have questions?
-          </h2>
-          <p className="text-text-secondary mb-6">
-            Can't find the answer you're looking for? Reach out to our support team.
-          </p>
-          <a
-            href="https://studio.designbyte.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-full font-semibold transition-colors"
-          >
-            Contact Designbyte Studio
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default FAQ;
-

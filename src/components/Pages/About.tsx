@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Logo from '../Layout/Logo';
 import Footer from '../Layout/Footer';
 
@@ -26,11 +27,37 @@ const About: React.FC = () => {
 
   const toggleTheme = () => setIsDarkMode(prev => !prev);
 
+  // Animation Variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { duration: 0.5, ease: "easeOut" }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-surface-50 text-text-primary font-sans flex flex-col transition-colors duration-300">
       
       {/* Simple Header for About Page */}
-      <header className="w-full px-4 py-6 sm:px-6 lg:px-8 border-b border-surface-200 dark:border-surface-800 bg-surface-50/80 backdrop-blur-md sticky top-0 z-10">
+      <motion.header 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full px-4 py-6 sm:px-6 lg:px-8 border-b border-surface-200 dark:border-surface-800 bg-surface-50/80 backdrop-blur-md sticky top-0 z-10"
+      >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
            <Link to="/" className="flex items-center gap-3 group">
               <div className="shrink-0 transition-transform group-hover:scale-95">
@@ -55,20 +82,30 @@ const About: React.FC = () => {
              )}
            </button>
         </div>
-      </header>
+      </motion.header>
 
       <main className="flex-grow w-full max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-extrabold text-text-primary mb-6 tracking-tight">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <motion.h1 className="text-4xl md:text-6xl font-extrabold text-text-primary mb-6 tracking-tight">
             Time, <span className="text-brand-600 dark:text-brand-400">Simplified.</span>
-          </h1>
-          <p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
+          </motion.h1>
+          <motion.p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
             Meridian is built for global citizens, remote teams, and digital nomads who need to make sense of a world running on different clocks.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:gap-12 mb-20">
-            <div className="bg-surface-card p-8 rounded-3xl border border-surface-200 shadow-sm hover:shadow-md transition-shadow">
+        <motion.div 
+          className="grid gap-8 md:grid-cols-2 lg:gap-12 mb-20"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+            <motion.div variants={itemVariants} className="bg-surface-card p-8 rounded-3xl border border-surface-200 shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 bg-brand-100 dark:bg-brand-900/30 rounded-2xl flex items-center justify-center text-brand-600 mb-6">
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -78,9 +115,9 @@ const About: React.FC = () => {
                 <p className="text-text-secondary leading-relaxed">
                     Instantly visualize time across 200+ cities. We handle the complex daylight saving transitions so you don't have to mental math.
                 </p>
-            </div>
+            </motion.div>
 
-            <div className="bg-surface-card p-8 rounded-3xl border border-surface-200 shadow-sm hover:shadow-md transition-shadow">
+            <motion.div variants={itemVariants} className="bg-surface-card p-8 rounded-3xl border border-surface-200 shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center text-purple-600 mb-6">
                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -90,9 +127,9 @@ const About: React.FC = () => {
                 <p className="text-text-secondary leading-relaxed">
                     Find the perfect overlap. Our visual timeline makes it easy to spot the "golden hours" where everyone is awake.
                 </p>
-            </div>
+            </motion.div>
             
-             <div className="bg-surface-card p-8 rounded-3xl border border-surface-200 shadow-sm hover:shadow-md transition-shadow">
+             <motion.div variants={itemVariants} className="bg-surface-card p-8 rounded-3xl border border-surface-200 shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-2xl flex items-center justify-center text-green-600 mb-6">
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -102,9 +139,9 @@ const About: React.FC = () => {
                 <p className="text-text-secondary leading-relaxed">
                     Built with Vite and React for instant load times. No bloat, just the tools you need to stay synchronized.
                 </p>
-            </div>
+            </motion.div>
 
-             <div className="bg-surface-card p-8 rounded-3xl border border-surface-200 shadow-sm hover:shadow-md transition-shadow">
+             <motion.div variants={itemVariants} className="bg-surface-card p-8 rounded-3xl border border-surface-200 shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center text-orange-600 mb-6">
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -114,10 +151,16 @@ const About: React.FC = () => {
                 <p className="text-text-secondary leading-relaxed">
                     Your preferences are stored locally on your device. We don't track your location or store any personal data.
                 </p>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
         
-        <div className="rounded-3xl bg-surface-card border border-surface-200 overflow-hidden">
+        <motion.div 
+           initial={{ opacity: 0, y: 20 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.6 }}
+           className="rounded-3xl bg-surface-card border border-surface-200 overflow-hidden"
+        >
             <div className="p-8 md:p-12 text-center">
                  <h2 className="text-2xl font-bold text-text-primary mb-4">Crafted by Designbyte Studio</h2>
                  <p className="text-text-secondary max-w-lg mx-auto mb-8">
@@ -135,7 +178,7 @@ const About: React.FC = () => {
                     </svg>
                  </a>
             </div>
-        </div>
+        </motion.div>
 
       </main>
 
