@@ -14,6 +14,19 @@ const TimeZoneComparator: React.FC<TimeZoneComparatorProps> = ({ baseDate }) => 
   const zone1 = ALL_ZONES.find(z => z.id === zone1Id) || ALL_ZONES[0];
   const zone2 = ALL_ZONES.find(z => z.id === zone2Id) || ALL_ZONES[3];
 
+  // Helper: Get keywords for search
+  const getKeywords = (country: string, city: string): string[] => {
+      const keywords: string[] = [];
+      const lowerCountry = country.toLowerCase();
+      
+      if (lowerCountry === 'usa') keywords.push('united states', 'america');
+      if (lowerCountry === 'uk') keywords.push('united kingdom', 'britain', 'england', 'london');
+      if (lowerCountry === 'uae') keywords.push('united arab emirates', 'dubai', 'abu dhabi');
+      if (lowerCountry === 'korea') keywords.push('south korea', 'seoul');
+      
+      return keywords;
+  };
+
   // Helper: Get wall clock time for a specific zone
   const getWallClockTime = (date: Date, iana: string) => {
     const parts = new Intl.DateTimeFormat('en-US', {
@@ -53,7 +66,8 @@ const TimeZoneComparator: React.FC<TimeZoneComparatorProps> = ({ baseDate }) => 
            label: z.city,
            subLabel: z.country,
            icon: z.flag,
-           rightLabel: formatDiff(diffHours) // How far is this zone from Zone 2?
+           rightLabel: formatDiff(diffHours), // How far is this zone from Zone 2?
+           keywords: getKeywords(z.country, z.city)
        };
     });
   }, [baseDate, zone2]);
@@ -72,7 +86,8 @@ const TimeZoneComparator: React.FC<TimeZoneComparatorProps> = ({ baseDate }) => 
            label: z.city,
            subLabel: z.country,
            icon: z.flag,
-           rightLabel: formatDiff(diffHours) // How far is this zone from Zone 1?
+           rightLabel: formatDiff(diffHours), // How far is this zone from Zone 1?
+           keywords: getKeywords(z.country, z.city)
        };
     });
   }, [baseDate, zone1]);

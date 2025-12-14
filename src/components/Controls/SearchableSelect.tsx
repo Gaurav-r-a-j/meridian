@@ -6,6 +6,7 @@ export interface SelectOption {
   subLabel?: string;
   icon?: string; // Emoji flag
   rightLabel?: string; // For time difference e.g. "+5h"
+  keywords?: string[]; // Extra search terms
 }
 
 interface SearchableSelectProps {
@@ -15,6 +16,25 @@ interface SearchableSelectProps {
   placeholder?: string;
   className?: string;
 }
+
+// Helper to highlight matching text
+const HighlightMatch = ({ text, query }: { text: string; query: string }) => {
+  if (!query || !text) return <>{text}</>;
+
+  const parts = text.split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+  
+  return (
+    <span>
+      {parts.map((part, i) => 
+        part.toLowerCase() === query.toLowerCase() ? (
+          <span key={i} className="bg-brand-100 text-brand-900 font-semibold rounded-[2px] px-0.5">{part}</span>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </span>
+  );
+};
 
 const SearchableSelect: React.FC<SearchableSelectProps> = ({ 
   options, 
@@ -52,9 +72,11 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   const filteredOptions = useMemo(() => {
     if (!searchQuery) return options;
     const lowerQuery = searchQuery.toLowerCase();
+    
     return options.filter(opt => 
       opt.label.toLowerCase().includes(lowerQuery) || 
-      (opt.subLabel && opt.subLabel.toLowerCase().includes(lowerQuery))
+      (opt.subLabel && opt.subLabel.toLowerCase().includes(lowerQuery)) ||
+      (opt.keywords && opt.keywords.some(k => k.toLowerCase().includes(lowerQuery)))
     );
   }, [options, searchQuery]);
 
@@ -97,7 +119,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search city..."
+                placeholder="Search city or country..."
                 className="w-full pl-9 pr-3 py-2 bg-surface-0 border border-surface-200 rounded-lg text-sm text-text-primary placeholder:text-text-muted focus:ring-2 focus:ring-brand-500/20 focus:border-brand-600 outline-none"
               />
               <svg 
@@ -131,11 +153,13 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <span className="text-xl flex-shrink-0">{option.icon}</span>
-                      <div className="flex flex-col min-w-0">
-                        <span className="font-medium truncate">{option.label}</span>
+                      <div className="flex flex-col min-w-0 grid gap-0.5">
+                        <span className="font-medium truncate">
+                          <HighlightMatch text={option.label} query={searchQuery} />
+                        </span>
                         {option.subLabel && (
                           <span className={`text-xs truncate ${value === option.id ? 'text-brand-700/70 dark:text-brand-300/70' : 'text-text-muted'}`}>
-                            {option.subLabel}
+                            <HighlightMatch text={option.subLabel} query={searchQuery} />
                           </span>
                         )}
                       </div>

@@ -173,9 +173,9 @@ const Home: React.FC = () => {
           onToggleFavorite={toggleFavorite}
         />
         
-        <Footer />
-        
       </div>
+      
+      <Footer />
 
       <MeetingLinkModal 
         isOpen={isShareModalOpen}
