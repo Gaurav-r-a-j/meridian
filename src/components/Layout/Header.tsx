@@ -31,27 +31,7 @@ const Header: React.FC<HeaderProps> = ({ onShare, onReset, onTimer, isLive, isDa
            </div>
         </Link>
         
-        {/* Navigation Links */}
-        <nav className="hidden md:flex items-center gap-4 mr-auto ml-8">
-          <Link 
-            to="/" 
-            className="text-sm font-medium text-text-secondary hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-          >
-            Home
-          </Link>
-          <Link 
-            to="/about" 
-            className="text-sm font-medium text-text-secondary hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-          >
-            About
-          </Link>
-          <Link 
-            to="/faq" 
-            className="text-sm font-medium text-text-secondary hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-          >
-            FAQ
-          </Link>
-        </nav>
+
         
         {/* Actions Section */}
         <div className="flex items-center gap-1.5 md:gap-3">
