@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 // Google Analytics 4 Component
 export const Analytics: React.FC = () => {

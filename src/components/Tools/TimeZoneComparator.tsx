@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { ALL_ZONES } from '../../constants';
-import { TimeZone } from '../../types';
+import SearchableSelect from '../Controls/SearchableSelect';
 
 interface TimeZoneComparatorProps {
   baseDate: Date;
@@ -14,20 +14,72 @@ const TimeZoneComparator: React.FC<TimeZoneComparatorProps> = ({ baseDate }) => 
   const zone1 = ALL_ZONES.find(z => z.id === zone1Id) || ALL_ZONES[0];
   const zone2 = ALL_ZONES.find(z => z.id === zone2Id) || ALL_ZONES[3];
 
-  // Calculate time difference description
-  const diffDescription = useMemo(() => {
-     const getWallClockTime = (date: Date, iana: string) => {
-        const parts = new Intl.DateTimeFormat('en-US', {
-            year: 'numeric', month: 'numeric', day: 'numeric',
-            hour: 'numeric', minute: 'numeric', second: 'numeric',
-            hour12: false,
-            timeZone: iana
-        }).formatToParts(date);
-        
-        const getPart = (type: string) => parseInt(parts.find(p => p.type === type)?.value || '0', 10);
-        return new Date(Date.UTC(getPart('year'), getPart('month')-1, getPart('day'), getPart('hour'), getPart('minute')));
-     };
+  // Helper: Get wall clock time for a specific zone
+  const getWallClockTime = (date: Date, iana: string) => {
+    const parts = new Intl.DateTimeFormat('en-US', {
+        year: 'numeric', month: 'numeric', day: 'numeric',
+        hour: 'numeric', minute: 'numeric', second: 'numeric',
+        hour12: false,
+        timeZone: iana
+    }).formatToParts(date);
+    
+    const getPart = (type: string) => parseInt(parts.find(p => p.type === type)?.value || '0', 10);
+    return new Date(Date.UTC(getPart('year'), getPart('month')-1, getPart('day'), getPart('hour'), getPart('minute')));
+  };
 
+  // Helper: Format hour difference
+  const formatDiff = (hours: number) => {
+    if (Math.abs(hours) < 0.01) return "Same time";
+    const sign = hours > 0 ? "+" : "-";
+    const abs = Math.abs(hours);
+    const h = Math.floor(abs);
+    const m = Math.round((abs - h) * 60);
+    
+    if (m === 0) return `${sign}${h}h`;
+    return `${sign}${h}h ${m}m`;
+  };
+
+  // Memoized Options for Selector 1 (Relative to Zone 2)
+  const zone1Options = useMemo(() => {
+    const wall2 = getWallClockTime(baseDate, zone2.iana);
+    
+    return ALL_ZONES.map(z => {
+       const wallZ = getWallClockTime(baseDate, z.iana);
+       const diffMs = wallZ.getTime() - wall2.getTime();
+       const diffHours = diffMs / (1000 * 60 * 60);
+       
+       return {
+           id: z.id,
+           label: z.city,
+           subLabel: z.country,
+           icon: z.flag,
+           rightLabel: formatDiff(diffHours) // How far is this zone from Zone 2?
+       };
+    });
+  }, [baseDate, zone2]);
+
+  // Memoized Options for Selector 2 (Relative to Zone 1)
+  const zone2Options = useMemo(() => {
+    const wall1 = getWallClockTime(baseDate, zone1.iana);
+    
+    return ALL_ZONES.map(z => {
+       const wallZ = getWallClockTime(baseDate, z.iana);
+       const diffMs = wallZ.getTime() - wall1.getTime();
+       const diffHours = diffMs / (1000 * 60 * 60);
+       
+       return {
+           id: z.id,
+           label: z.city,
+           subLabel: z.country,
+           icon: z.flag,
+           rightLabel: formatDiff(diffHours) // How far is this zone from Zone 1?
+       };
+    });
+  }, [baseDate, zone1]);
+
+
+  // Text Description of the difference
+  const diffDescription = useMemo(() => {
      const wall1 = getWallClockTime(baseDate, zone1.iana);
      const wall2 = getWallClockTime(baseDate, zone2.iana);
      
@@ -95,22 +147,26 @@ const TimeZoneComparator: React.FC<TimeZoneComparatorProps> = ({ baseDate }) => 
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-2 w-full md:w-auto">
-                <select 
-                    value={zone1Id} 
-                    onChange={(e) => setZone1Id(e.target.value)}
-                    className="w-full sm:flex-1 md:w-48 p-2 bg-surface-50 border border-surface-200 rounded-lg text-sm font-medium focus:ring-2 focus:ring-brand-500/20 focus:border-brand-600 outline-none text-text-primary"
-                >
-                    {ALL_ZONES.map(z => <option key={`z1-${z.id}`} value={z.id}>{z.flag} {z.city}</option>)}
-                </select>
+                <div className="w-full sm:w-64">
+                    <SearchableSelect
+                        options={zone1Options}
+                        value={zone1Id}
+                        onChange={setZone1Id}
+                        placeholder="Select City..."
+                    />
+                </div>
+                
                 <span className="text-text-muted hidden sm:inline">vs</span>
                 <span className="text-text-muted sm:hidden text-xs">comparing with</span>
-                <select 
-                    value={zone2Id} 
-                    onChange={(e) => setZone2Id(e.target.value)}
-                    className="w-full sm:flex-1 md:w-48 p-2 bg-surface-50 border border-surface-200 rounded-lg text-sm font-medium focus:ring-2 focus:ring-brand-500/20 focus:border-brand-600 outline-none text-text-primary"
-                >
-                    {ALL_ZONES.map(z => <option key={`z2-${z.id}`} value={z.id}>{z.flag} {z.city}</option>)}
-                </select>
+                
+                <div className="w-full sm:w-64">
+                    <SearchableSelect
+                        options={zone2Options}
+                        value={zone2Id}
+                        onChange={setZone2Id}
+                        placeholder="Select City..."
+                    />
+                </div>
             </div>
         </div>
 
